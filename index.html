@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中高英語文法 完全マスター - Grammar Learning Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Tone.js for Audio FX -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        jhs: {
+                            light: '#ecfdf5',
+                            border: '#a7f3d0',
+                            text: '#047857',
+                            badge: '#10b981'
+                        },
+                        hs: {
+                            light: '#fff7ed',
+                            border: '#fed7aa',
+                            text: '#c2410c',
+                            badge: '#f97316'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .word-chip {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .word-chip:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('curriculum')">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+                        <i class="fa-solid font-bold fa-graduation-cap text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-black text-lg sm:text-xl tracking-tight text-slate-900">Grammar<span class="text-brand-600">Master</span></span>
+                        <span class="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 ml-2 bg-indigo-100 text-brand-700 rounded-full">中高6か年完結</span>
+                    </div>
+                </div>
+
+                <!-- Nav Links -->
+                <nav class="flex items-center space-x-1 sm:space-x-2">
+                    <button id="nav-curriculum" onclick="switchTab('curriculum')" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-brand-600 bg-brand-50 transition">
+                        <i class="fa-solid fa-book-open mr-1.5"></i>文法一覧
+                    </button>
+                    <button id="nav-quiz" onclick="switchTab('quiz')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-bolt mr-1.5 text-amber-500"></i>総合演習
+                    </button>
+                    <button id="nav-bookmark" onclick="switchTab('bookmark')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-bookmark mr-1.5 text-rose-500"></i>ブックマーク
+                    </button>
+                    <button id="nav-dashboard" onclick="switchTab('dashboard')" class="nav-btn px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-chart-pie mr-1.5 text-emerald-500"></i>学習データ
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+        <!-- TAB 1: CURRICULUM VIEW -->
+        <section id="tab-curriculum" class="space-y-6">
+            <!-- Hero / Search Banner -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand-700 via-indigo-600 to-indigo-800 text-white p-6 sm:p-10 shadow-xl">
+                <div class="relative z-10 max-w-2xl">
+                    <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">中学・高校の英語文法を体系的に完全攻略</h1>
+                    <p class="text-brand-100 text-sm sm:text-base mb-6 leading-relaxed">基礎概念の理解から演習テスト、リスニングまで。学年や単元を選択して着実にステップアップしましょう。</p>
+                    
+                    <!-- Search Input & Filters -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="relative flex-1">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="search-input" oninput="filterUnits()" placeholder="文法項目やキーワードを検索 (例: 仮定法, 関係代名詞, receive...)" class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 backdrop-blur-md text-white placeholder-slate-300 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/50 text-sm">
+                        </div>
+                    </div>
+                </div>
+                <!-- Background decoration -->
+                <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
+                <div class="flex flex-wrap gap-2" id="filter-buttons">
+                    <button onclick="setFilter('all')" class="filter-btn active px-4 py-2 rounded-xl text-sm font-semibold bg-brand-600 text-white shadow-sm transition">すべて</button>
+                    <button onclick="setFilter('jhs1')" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">中学1年</button>
+                    <button onclick="setFilter('jhs2')" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">中学2年</button>
+                    <button onclick="setFilter('jhs3')" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">中学3年</button>
+                    <button onclick="setFilter('hs1')" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">高校基礎 (高1・2)</button>
+                    <button onclick="setFilter('hs2')" class="filter-btn px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition">高校応用・受験</button>
+                </div>
+
+                <div class="text-xs font-semibold text-slate-500" id="unit-count-display">
+                    全 <span id="total-units-count">0</span> 単元を表示中
+                </div>
+            </div>
+
+            <!-- Grammar Unit Cards Grid -->
+            <div id="units-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Dynamically generated unit cards -->
+            </div>
+        </section>
+
+        <!-- TAB 2: MIXED QUIZ MODE -->
+        <section id="tab-quiz" class="hidden space-y-6 max-w-3xl mx-auto">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                <div class="flex items-center justify-between mb-6 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 mb-1">実力チャレンジ</span>
+                        <h2 class="text-2xl font-bold text-slate-900">ランダム総合演習</h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-slate-500">連続正解</div>
+                        <div class="text-xl font-black text-brand-600" id="quiz-streak">0 回</div>
+                    </div>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="mixed-quiz-container">
+                    <!-- Dynamic Question Inserted Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: BOOKMARKS -->
+        <section id="tab-bookmark" class="hidden space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+                <div class="flex items-center justify-between mb-6">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900">ブックマークした単元</h2>
+                        <p class="text-slate-500 text-sm">あとで見直したい単元を保存して集中学習できます。</p>
+                    </div>
+                    <span id="bookmark-count-badge" class="px-3 py-1 bg-rose-100 text-rose-700 font-bold rounded-full text-xs">0 件</span>
+                </div>
+                <div id="bookmark-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Dynamic Bookmarks -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: DASHBOARD / PROGRESS -->
+        <section id="tab-dashboard" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Overall Progress Card -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">全体の達成度</span>
+                        <div class="text-4xl font-black text-brand-600 mt-2" id="dash-mastery-percentage">0%</div>
+                        <p class="text-xs text-slate-500 mt-1"><span id="dash-completed-count">0</span> / <span id="dash-total-count">0</span> 単元マスター完了</p>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden mt-4">
+                        <div id="dash-mastery-bar" class="bg-gradient-to-r from-brand-500 to-emerald-400 h-full w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Performance Card -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">演習正答率</span>
+                        <div class="text-4xl font-black text-emerald-600 mt-2" id="dash-accuracy">0%</div>
+                        <p class="text-xs text-slate-500 mt-1">解答数: <span id="dash-total-answered">0</span> 問</p>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs font-medium text-slate-600 mt-4">
+                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                        <span>正解数: <span id="dash-correct-count" class="font-bold text-slate-800">0</span></span>
+                    </div>
+                </div>
+
+                <!-- School Level Breakdown -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">中学・高校別クリア度</span>
+                    <div class="space-y-3 mt-3">
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-emerald-700">中学文法 (JHS)</span>
+                                <span id="dash-jhs-text">0/0</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div id="dash-jhs-bar" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-orange-700">高校文法 (HS)</span>
+                                <span id="dash-hs-text">0/0</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                                <div id="dash-hs-bar" class="bg-orange-500 h-full w-0 transition-all duration-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Unit Status Table -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">全単元カリキュラム進行状況</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-slate-400 font-semibold text-xs uppercase">
+                                <th class="py-3 px-4">対象学年</th>
+                                <th class="py-3 px-4">文法単元名</th>
+                                <th class="py-3 px-4">基本公式/パターン</th>
+                                <th class="py-3 px-4 text-center">状態</th>
+                                <th class="py-3 px-4 text-right">アクション</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-table-body" class="divide-y divide-slate-100 text-slate-700">
+                            <!-- Dynamically generated rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- LESSON DETAIL MODAL -->
+    <div id="lesson-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="bg-white rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-5 sm:p-6 bg-slate-900 text-white flex items-start justify-between relative border-b border-slate-800">
+                <div>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span id="modal-level-badge" class="px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase">LEVEL</span>
+                        <span id="modal-category" class="text-xs text-slate-400 font-medium"></span>
+                    </div>
+                    <h2 id="modal-title" class="text-xl sm:text-2xl font-bold tracking-tight"></h2>
+                </div>
+                <button onclick="closeLessonModal()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-slate-300 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Sub-Header Tabs -->
+            <div class="flex border-b border-slate-200 bg-slate-50 px-6">
+                <button id="tab-btn-theory" onclick="switchModalTab('theory')" class="modal-tab-btn py-3 px-4 font-bold text-sm text-brand-600 border-b-2 border-brand-600 transition">
+                    <i class="fa-solid fa-book-bookmark mr-2"></i>解説ノート
+                </button>
+                <button id="tab-btn-examples" onclick="switchModalTab('examples')" class="modal-tab-btn py-3 px-4 font-medium text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent transition">
+                    <i class="fa-solid fa-volume-high mr-2 text-emerald-500"></i>例文リスニング
+                </button>
+                <button id="tab-btn-practice" onclick="switchModalTab('practice')" class="modal-tab-btn py-3 px-4 font-medium text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent transition">
+                    <i class="fa-solid fa-pen-to-square mr-2 text-amber-500"></i>確認テスト
+                </button>
+            </div>
+
+            <!-- Modal Body Area -->
+            <div class="p-6 overflow-y-auto custom-scrollbar flex-1 bg-white" id="modal-content-container">
+                <!-- Theory Tab -->
+                <div id="modal-tab-content-theory" class="space-y-6">
+                    <!-- Content injected dynamically -->
+                </div>
+
+                <!-- Sentences Tab -->
+                <div id="modal-tab-content-examples" class="hidden space-y-4">
+                    <!-- Sentences injected dynamically -->
+                </div>
+
+                <!-- Practice Tab -->
+                <div id="modal-tab-content-practice" class="hidden space-y-6">
+                    <!-- Quiz injected dynamically -->
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
+                <button id="modal-bookmark-toggle" onclick="toggleCurrentBookmark()" class="px-4 py-2 rounded-xl text-sm font-semibold border border-slate-300 hover:bg-slate-100 transition flex items-center space-x-2">
+                    <i class="fa-regular fa-bookmark"></i>
+                    <span>ブックマーク保存</span>
+                </button>
+                <button id="modal-mastery-toggle" onclick="toggleCurrentMastery()" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition flex items-center space-x-2">
+                    <i class="fa-solid fa-check"></i>
+                    <span id="modal-mastery-text">完了としてマーク</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AUDIO TOAST / NOTIFICATION -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden max-w-sm px-4 py-3 rounded-xl bg-slate-900 text-white shadow-2xl text-sm flex items-center space-x-3 transition-all duration-300">
+        <i id="toast-icon" class="fa-solid fa-circle-info text-brand-400"></i>
+        <span id="toast-message">メッセージ</span>
+    </div>
+
+    <!-- SCRIPT DATA & APP LOGIC -->
+    <script>
+        // --- 1. GRAMMAR DATABASE (JUNIOR HIGH & HIGH SCHOOL) ---
+        const GRAMMAR_DATA = [
+            // JUNIOR HIGH SCHOOL 1
+            {
+                id: 'jhs1-be-verb',
+                level: 'jhs1',
+                levelLabel: '中学1年',
+                title: 'be動詞と一般動詞の区別',
+                category: '基本文型・動詞',
+                formula: 'S + be (am/is/are) + C / S + V (一般動詞)',
+                overview: '英語の動詞は「be動詞」と「一般動詞」の2種類に大別されます。ひとつの文でこれらを同時に動詞として使うことはできません。',
+                coreConcept: 'be動詞は「＝（イコール）」を表す記号。一般動詞は「具体的な動作や状態」を表す言葉。',
+                points: [
+                    { title: 'be動詞の種類と使い分け', desc: '主語によって am (I), is (he/she/it/単数名詞), are (you/we/they/複数名詞) を使い分けます。' },
+                    { title: '否定文・疑問文のルール', desc: 'be動詞の文：be動詞の後ろにnotを置く / be動詞を主語の前に出す。<br>一般動詞の文：do/does/don\'t/doesn\'t を借りてくる。' },
+                    { title: '三単現のs', desc: '一般動詞の現在形で、主語が「三人称単数（he, she, it など）」のときは動詞の語尾に s または es をつけます。' }
+                ],
+                commonMistakes: [
+                    { wrong: 'I am play tennis.', right: 'I play tennis.', note: 'be動詞(am)と一般動詞(play)をそのまま並べてはいけません。' },
+                    { wrong: 'He play baseball.', right: 'He plays baseball.', note: '主語がHe（三人称単数）なのでplaysになります。' }
+                ],
+                examples: [
+                    { en: 'She is a talented English teacher.', ja: '彼女は優秀な英語の先生です。' },
+                    { en: 'They play soccer in the park every Sunday.', ja: '彼らは毎週日曜日に公園でサッカーをします。' },
+                    { en: 'Does Ken live in Tokyo?', ja: 'ケンは東京に住んでいますか？' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: '次のカッコに入る最も適切な語を選びなさい。<br>My brother _____ like high school math.',
+                        options: ['is not', 'does not', 'don\'t', 'are not'],
+                        answer: 1,
+                        explanation: 'like は一般動詞で、主語 My brother は三人称単数なので does not (doesn\'t) を使います。'
+                    },
+                    {
+                        type: 'reorder',
+                        question: '日本文の意味になるように語句を並べ替えなさい。<br>「彼女は毎日英語を勉強しますか？」',
+                        words: ['She', 'Does', 'English', 'study', 'every day', '?'],
+                        correctOrder: ['Does', 'She', 'study', 'English', 'every day', '?'],
+                        explanation: '一般動詞の疑問文で、主語がShe（三人称単数）なので Does を文頭に置きます。'
+                    }
+                ]
+            },
+            {
+                id: 'jhs1-progressive',
+                level: 'jhs1',
+                levelLabel: '中学1年',
+                title: '現在進行形 (be + ~ing)',
+                category: '時制',
+                formula: 'Subject + am/is/are + V-ing',
+                overview: '「今まさに〜している最中である」という一時的な動作の進行を表します。',
+                coreConcept: '「躍動する瞬間」のカメラで切り取ったパシャリというイメージ。',
+                points: [
+                    { title: '~ing の作り方の注意点', desc: '①そのままing (play→playing), ②eを消してing (make→making), ③子音字を重ねてing (run→running, swim→swimming)' },
+                    { title: '進行形にできない動詞', desc: 'know, have (持っている), like などの「状態を表す動詞」は原則として進行形にしません。' }
+                ],
+                commonMistakes: [
+                    { wrong: 'I running now.', right: 'I am running now.', note: 'ingの前には必ずbe動詞(am/is/are)が必要です。' }
+                ],
+                examples: [
+                    { en: 'Look! It is snowing outside.', ja: '見て！外で雪が降っているよ。' },
+                    { en: 'What are you listening to right now?', ja: '今、何を聞いているのですか？' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: '「トムは今、部屋で勉強しています」の正しい英文は？',
+                        options: ['Tom studies in his room now.', 'Tom is studying in his room now.', 'Tom studying in his room now.', 'Tom is study in his room now.'],
+                        answer: 1,
+                        explanation: '進行形は「be動詞 + 動詞のing形」が必要です。Tom (三人称単数) なので is studying が正解。'
+                    }
+                ]
+            },
+
+            // JUNIOR HIGH SCHOOL 2
+            {
+                id: 'jhs2-aux',
+                level: 'jhs2',
+                levelLabel: '中学2年',
+                title: '助動詞 (can / must / should / may)',
+                category: '助動詞',
+                formula: 'Subject + 助動詞 + 動詞の原形',
+                overview: '動詞に気持ちや話者の判断（「〜できる」「〜すべき」「〜に違いない」など）を付け加える言葉です。',
+                coreConcept: '話し手の「心のフィルター」を通すレンズのような役割。助動詞の後ろは必ず【原形】。',
+                points: [
+                    { title: 'Can / Be able to', desc: '能力・可能「〜できる」または許可「〜してもよい」。' },
+                    { title: 'Must / Have to', desc: '義務・強制「〜しなければならない」。否定形 must not（〜してはならない：禁止）と don\'t have to（〜する必要はない：不要）の違いに注意！' },
+                    { title: 'Should / Must の強さ', desc: 'must（強い義務・絶対）＞ should（〜したほうがよい・アドバイス）。' }
+                ],
+                commonMistakes: [
+                    { wrong: 'He can plays the guitar.', right: 'He can play the guitar.', note: '助動詞の直後は主語が何であれ「動詞の原形」になります。' },
+                    { wrong: 'You don\'t must enter this room.', right: 'You must not enter this room.', note: '「〜してはいけない（禁止）」は must not を使います。' }
+                ],
+                examples: [
+                    { en: 'You must not use your phone during the exam.', ja: '試験中に携帯電話を使ってはいけません。' },
+                    { en: 'You don\'t have to hurry; we have plenty of time.', ja: '急ぐ必要はありません。時間はたっぷりあります。' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: '「ここに車を止めてはいけません（禁止）」を表す文は？',
+                        options: ['You don\'t have to park here.', 'You must not park here.', 'You can park here.', 'You should park here.'],
+                        answer: 1,
+                        explanation: '「〜してはならない」という強固な禁止は must not を使用します。don\'t have to は「〜しなくてもよい」です。'
+                    }
+                ]
+            },
+            {
+                id: 'jhs2-infinitive',
+                level: 'jhs2',
+                levelLabel: '中学2年',
+                title: '不定詞 (to + 動詞の原形) 3用法',
+                category: '准動詞',
+                formula: 'to + 動詞の原形',
+                overview: '動詞を名詞・形容詞・副詞の形に化けさせて「〜すること」「〜するための」「〜するために」という意味を作ります。',
+                coreConcept: '「to ＝ 矢印（→）」。これから向かっていく未来への方向感を表します。',
+                points: [
+                    { title: '① 名詞的用法', desc: '「〜すること」 (主語や目的語になる) 例: I want to visit London.' },
+                    { title: '② 形容詞的用法', desc: '「〜するための/〜すべき」 (前の名詞を修飾) 例: I have a lot of homework to do.' },
+                    { title: '③ 副詞的用法', desc: '「〜するために（目的）」「〜して（感情の原因）」 例: He saved money to buy a computer.' }
+                ],
+                commonMistakes: [
+                    { wrong: 'I went to the store for buy food.', right: 'I went to the store to buy food.', note: '目的を表す「〜するために」は for ではなく to + 動詞の原形（不定詞）を使います。' }
+                ],
+                examples: [
+                    { en: 'My dream is to travel around the world.', ja: '私の夢は世界中を旅行することです。（名詞的）' },
+                    { en: 'She studied hard to pass the high school entrance exam.', ja: '彼女は高校入試に合格するために一生懸命勉強しました。（副詞的・目的）' }
+                ],
+                quiz: [
+                    {
+                        type: 'reorder',
+                        question: '日本文の意味になるように並べ替えなさい。<br>「私には今日読むべき本がたくさんあります。」',
+                        words: ['books', 'have', 'to', 'many', 'read', 'I', 'today', '.'],
+                        correctOrder: ['I', 'have', 'many', 'books', 'to', 'read', 'today', '.'],
+                        explanation: 'books（名詞）の直後に to read（不定詞・形容詞的用法）を置いて「読むべき本」と修飾します。'
+                    }
+                ]
+            },
+
+            // JUNIOR HIGH SCHOOL 3
+            {
+                id: 'jhs3-passive',
+                level: 'jhs3',
+                levelLabel: '中学3年',
+                title: '受動態・受け身 (be + 過去分詞)',
+                category: '態',
+                formula: 'Subject + be動詞 + 過去分詞 (+ by ~)',
+                overview: '「〜される」「〜された」という視点で行為を受ける側を主語にする表現です。',
+                coreConcept: 'スポットライトを「行為をする人」から「行為を受けるモノ・人」に当てる変身。',
+                points: [
+                    { title: '基本形と時制の変化', desc: '現在形: is/am/are + p.p., 過去形: was/were + p.p., 助動詞付き: can be + p.p.' },
+                    { title: 'by を使わない受動態', desc: 'be surprised at (〜に驚く), be known to (〜に知られている), be made of/from (〜で作られている) などの熟語も頻出！' }
+                ],
+                commonMistakes: [
+                    { wrong: 'This house built in 1990.', right: 'This house was built in 1990.', note: '受動態には be動詞(was) が必須です。' }
+                ],
+                examples: [
+                    { en: 'This website is accessed by millions of students.', ja: 'このウェブサイトは何百万人もの生徒にアクセスされています。' },
+                    { en: 'America was discovered by Columbus in 1492.', ja: 'アメリカは1492年にコロンブスによって発見されました。' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: 'カッコに入る適切な語を選びなさい。<br> The clean energy _____ produced by wind turbines.',
+                        options: ['is', 'does', 'has', 'are'],
+                        answer: 0,
+                        explanation: '主語 energy は不可算名詞（単数扱い）であり、「生産される」という受動態なので is が入ります。'
+                    }
+                ]
+            },
+            {
+                id: 'jhs3-present-perfect',
+                level: 'jhs3',
+                levelLabel: '中学3年',
+                title: '現在完了形 (have/has + 過去分詞)',
+                category: '時制',
+                formula: 'Subject + have / has + 過去分詞',
+                overview: '「過去に起きたことが現在までつながっている」ことを表す時制。中学英語最大の難所の一つです。',
+                coreConcept: '「過去」と「現在」を両手でつなぐアーチのイメージ。',
+                points: [
+                    { title: '① 完了・結果 (Already / Just / Yet)', desc: '「（今や）〜してしまった・ちょうど〜したところだ」' },
+                    { title: '② 経験 (Ever / Never / ~ times)', desc: '「今までに〜したことがある」' },
+                    { title: '③ 継続 (For / Since)', desc: '「ずっと〜し続けている」 ※過去を表す yesterday, ago, when などとは一緒に使えない！' }
+                ],
+                commonMistakes: [
+                    { wrong: 'I have seen him yesterday.', right: 'I saw him yesterday.', note: 'yesterday などの明らかな過去の一点を示す言葉と現在完了形を併用することはできません。' }
+                ],
+                examples: [
+                    { en: 'I have lived in Yamagata for three years.', ja: '私は山形に3年間住んでいます。（継続）' },
+                    { en: 'Have you ever visited Kyoto in autumn?', ja: '今までに秋の京都を訪れたことがありますか？（経験）' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: '「私はちょうど宿題をやり終えたところです」の英訳として正しいものは？',
+                        options: ['I finish my homework just.', 'I have just finished my homework.', 'I finished my homework since.', 'I had just finish my homework.'],
+                        answer: 1,
+                        explanation: '完了を表す現在完了形 have + just + 過去分詞(finished) を使用します。'
+                    }
+                ]
+            },
+            {
+                id: 'jhs3-relative',
+                level: 'jhs3',
+                levelLabel: '中学3年',
+                title: '関係代名詞 (who / which / that)',
+                category: '関係詞',
+                formula: '先行詞（名詞） + [ who / which / that + 節 ]',
+                overview: '2つの文をガッチャンコと合体させ、名詞（先行詞）を後ろから文で説明（修飾）する接着剤の役割を果たします。',
+                coreConcept: '名詞の背中に「説明用ステッカー」を貼る感覚。',
+                points: [
+                    { title: '主格の関係代名詞', desc: '先行詞が人のとき who / モノのとき which。節の中で主語の役割をする。' },
+                    { title: '目的格の関係代名詞', desc: '先行詞が人のとき whom(who) / モノのとき which。目的格は省略可能！' },
+                    { title: 'that の万能性', desc: '人・モノどちらでも使える万能の関係代名詞。最上級や first などがつくと that が好まれます。' }
+                ],
+                commonMistakes: [
+                    { wrong: 'The man who he lives next door is a doctor.', right: 'The man who lives next door is a doctor.', note: 'who が代名詞の役割も兼ねているため、後ろに he を重複してはいけません。' }
+                ],
+                examples: [
+                    { en: 'I know a girl who can speak four languages.', ja: '私は4カ国語を話せる女の子を知っています。' },
+                    { en: 'This is the book which I bought yesterday.', ja: 'これは私が昨日買った本です。' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: 'カッコに入る適切な関係代名詞を選びなさい。<br> Look at the dog _____ is running after the ball.',
+                        options: ['who', 'which', 'whom', 'what'],
+                        answer: 1,
+                        explanation: '先行詞 the dog は動物（モノ扱い）であり、後ろの節で主語の役割をするため which (または that) が正解です。'
+                    }
+                ]
+            },
+
+            // HIGH SCHOOL 1 & 2 (基礎〜標準)
+            {
+                id: 'hs1-subjunctive',
+                level: 'hs1',
+                levelLabel: '高校基礎',
+                title: '仮定法過去・仮定法過去完了',
+                category: '仮定法',
+                formula: 'If + S + 過去形, S + would/could + 原形（現在の妄想）',
+                overview: '「事実とは異なること」や「実現可能性が極めて低い妄想」を表現するために、時制を意図的に1つ昔にズラして距離感を出す文法です。',
+                coreConcept: '現実とのディスタンス（距離感）。「タイムスリップして現実から遠ざかる」イメージ。',
+                points: [
+                    { title: '仮定法過去（現在の事実に反する妄想）', desc: 'If S + 動詞の過去形 (be動詞はwere), S + would/could/might + 原形.<br>「もし（今）〜なら、…なのに。」' },
+                    { title: '仮定法過去完了（過去の事実に反する後悔）', desc: 'If S + had + p.p., S + would/could/might + have + p.p.<br>「もし（あの時）〜だったら、…だったのに。」' },
+                    { title: 'I wish + 仮定法', desc: '「（今/過去に）〜であればいいのに」という願望を表す。' }
+                ],
+                commonMistakes: [
+                    { wrong: 'If I am rich, I would buy a yacht.', right: 'If I were rich, I would buy a yacht.', note: '後半に would がある妄想の文（仮定法）なので、If 節も過去形(were)にします。' }
+                ],
+                examples: [
+                    { en: 'If I had enough time, I would join the music club.', ja: 'もし十分な時間があれば、音楽部に入るのに。（実際は時間がない）' },
+                    { en: 'If you had studied harder, you could have passed the exam.', ja: 'もしもっと勉強していたら、試験に合格できただろうに。（実際は勉強しなかった）' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: '「もし私が鳥なら、あなたのところへ飛んでいけるのに」の空欄に入るのは？<br>If I _____ a bird, I could fly to you.',
+                        options: ['am', 'was', 'were', 'had been'],
+                        answer: 2,
+                        explanation: '現在の実に反する仮定法過去。be動詞は伝統的・標準的な文法では人称に関わらず were を使用します。'
+                    }
+                ]
+            },
+            {
+                id: 'hs1-participle-clause',
+                level: 'hs1',
+                levelLabel: '高校基礎',
+                title: '分詞構文 (Participle Construction)',
+                category: '準動詞',
+                formula: 'V-ing ..., Subject + Verb ~',
+                overview: '接続詞 (when, because, afterなど) と主語を省略し、動詞をing形に変化させて文をコンパクトかつスマートに繋げる表現。',
+                coreConcept: '接続詞と主語を削ぎ落とした「英語の短縮ショートカット」。解説本や長文読解の頻出ポイント！',
+                points: [
+                    { title: '分詞構文の作り方 3ステップ', desc: '① 接続詞を消す → ② 主節と同じ主語を消す → ③ 動詞を ~ing 形に変える。（受け身の場合は Being が消えて 過去分詞 から始まる）' },
+                    { title: '主な意味の解釈（文脈で判断）', desc: '① 時（〜するとき）② 理由（〜なので）③ 継続・付帯状況（〜して、そして…）④ 条件（〜ならば）' }
+                ],
+                commonMistakes: [
+                    { wrong: 'Walking along the street, a dog bit me.', right: 'While I was walking along the street, a dog bit me.', note: '分詞構文の主語と主節の主語が一致していないと意味が狂います（主語の不一致：懸垂分詞の誤り）。' }
+                ],
+                examples: [
+                    { en: 'Seeing the police officer, the thief ran away.', ja: '警察官を見ると（見つめたとき）、泥棒は逃げ去った。' },
+                    { en: 'Written in plain English, this book is easy to read.', ja: '平易な英語で書かれているので（受け身）、この本は読みやすい。' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: '次の2文を分詞構文で1文にする場合、カッコに入る語は？<br>Because she felt tired, she went to bed early. <br>→ ( _____ ) tired, she went to bed early.',
+                        options: ['Feel', 'Felt', 'Feeling', 'Having felt'],
+                        answer: 2,
+                        explanation: '接続詞 Because と主語 she を取り払い、felt の原形 feel を ing 形にした Feeling が正解。'
+                    }
+                ]
+            },
+
+            // HIGH SCHOOL 2 & 3 (応用・最難関・受験)
+            {
+                id: 'hs2-inversion',
+                level: 'hs2',
+                levelLabel: '高校応用',
+                title: '倒置・強調構文 (Inversion & Emphasis)',
+                category: '特殊構文',
+                formula: '否定語 + 助動詞/be動詞 + S + V ... / It is ~ that ...',
+                overview: '特定の部分を強調したり、感情を高めたりするために通常の語順（S+V）をひっくり返す表現技法。入試長文・和訳問題の頻出エリア。',
+                coreConcept: 'スポットライトを当てるための「語順のジャンプ」。否定語が文頭に出ると「疑問文と同じ語順」になる！',
+                points: [
+                    { title: '否定語の文頭倒置', desc: 'Never, Seldom, Hardly, Little などの否定語が文頭に来ると、語順が＜疑問文の形＞（助動詞+S+V）になります。<br>例: Never have I seen such a beautiful scene.' },
+                    { title: '強調構文 (It is ... that ~)', desc: 'It is [強調したい要素] that [残りの文]. 「〜なのは他ならぬ…だ」' }
+                ],
+                commonMistakes: [
+                    { wrong: 'Little I dreamed that I would win.', right: 'Little did I dream that I would win.', note: '否定語 Little が文頭に出ているため、過去形の疑問文と同じく did I dream という倒置語順になります。' }
+                ],
+                examples: [
+                    { en: 'Rarely do we encounter such a dedicated teacher.', ja: 'これほど献身的な先生に出会うことは滅多にありません。' },
+                    { en: 'It was in Paris that I first met my wife.', ja: '私が最初に妻と出会ったのは、他ならぬパリでのことでした。' }
+                ],
+                quiz: [
+                    {
+                        type: 'reorder',
+                        question: '倒置を用いて「私はその時までその事実を夢にも思わなかった」の意味にしなさい。',
+                        words: ['the truth', 'did', 'I', 'know', 'Little', 'until then', '.'],
+                        correctOrder: ['Little', 'did', 'I', 'know', 'the truth', 'until then', '.'],
+                        explanation: '否定語 Little が文頭にあるため、後ろは 疑問文の語順 (did + I + know) になります。'
+                    }
+                ]
+            },
+            {
+                id: 'hs2-relative-adv',
+                level: 'hs2',
+                levelLabel: '高校応用',
+                title: '複合関係詞と関係副詞 (where / when / whoever)',
+                category: '関係詞',
+                formula: '関係副詞 (where/when/why/how) / 複合関係代名詞 (~ever)',
+                overview: '場所・時間・理由・方法を表す関係副詞や、「〜する人は誰でも」「たとえ何が〜しようとも」を表す複合関係詞の高度な運用です。',
+                coreConcept: '関係副詞 ＝ 「前置詞 ＋ 関係代名詞」。後ろの文は完全な文（S/V/Oが揃っている）が来る！',
+                points: [
+                    { title: '関係代名詞 vs 関係副詞の見分け', desc: '後ろの文で名詞（SやO）が欠けていれば関係代名詞。文として完成していれば関係副詞！' },
+                    { title: '複合関係詞 (~ever)', desc: 'Whoever (〜する人は誰でも / たとえ誰が〜しようとも), Whatever (〜するものは何でも / たとえ何が〜しようとも)' }
+                ],
+                commonMistakes: [
+                    { wrong: 'This is the city which I was born.', right: 'This is the city where I was born. (or in which)', note: 'I was born (in the city) と完全な文が後ろに続いているため、where を使います。' }
+                ],
+                examples: [
+                    { en: 'Whoever breaks the rule will be disqualified.', ja: 'ルールを破る者は誰であっても失格となります。' },
+                    { en: 'I remember the day when we first came to this school.', ja: '私たちが最初にこの学校に来た日のことを覚えています。' }
+                ],
+                quiz: [
+                    {
+                        type: 'choice',
+                        question: 'カッコに入る最適な語を選びなさい。<br>You can order _____ dish you like from the menu.',
+                        options: ['whichever', 'however', 'wherever', 'whenever'],
+                        answer: 0,
+                        explanation: '「（提示されたメニューの中で）あなたが好きな料理のどちらでも」という意味なので whichever が適切です。'
+                    }
+                ]
+            }
+        ];
+
+        // --- 2. STATE MANAGEMENT & STORAGE ---
+        let userProgress = JSON.parse(localStorage.getItem('gm_progress')) || {}; 
+        let bookmarks = JSON.parse(localStorage.getItem('gm_bookmarks')) || [];
+        let currentFilter = 'all';
+        let currentModalUnitId = null;
+        let activeTab = 'curriculum';
+        let quizStreak = 0;
+        let currentQuizState = { total: 0, correct: 0 };
+
+        // --- 3. INIT APP ---
+        window.addEventListener('DOMContentLoaded', () => {
+            renderUnitsGrid();
+            updateDashboardStats();
+            setupSearch();
+        });
+
+        // --- 4. NAVIGATION & TABS ---
+        function switchTab(tabId) {
+            activeTab = tabId;
+            const tabs = ['curriculum', 'quiz', 'bookmark', 'dashboard'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`nav-${t}`);
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    btn.classList.add('bg-brand-50', 'text-brand-600', 'font-semibold');
+                    btn.classList.remove('text-slate-600', 'font-medium');
+                } else {
+                    el.classList.add('hidden');
+                    btn.classList.remove('bg-brand-50', 'text-brand-600', 'font-semibold');
+                    btn.classList.add('text-slate-600', 'font-medium');
+                }
+            });
+
+            if (tabId === 'bookmark') renderBookmarks();
+            if (tabId === 'dashboard') updateDashboardStats();
+            if (tabId === 'quiz') startMixedQuiz();
+        }
+
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-600', 'text-white', 'active');
+                btn.classList.add('bg-white', 'text-slate-600');
+            });
+            event.target.classList.add('bg-brand-600', 'text-white', 'active');
+            event.target.classList.remove('bg-white', 'text-slate-600');
+            renderUnitsGrid();
+        }
+
+        // --- 5. RENDER UNITS GRID ---
+        function renderUnitsGrid() {
+            const grid = document.getElementById('units-grid');
+            const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+            grid.innerHTML = '';
+
+            const filtered = GRAMMAR_DATA.filter(unit => {
+                const matchesFilter = (currentFilter === 'all') || (unit.level === currentFilter);
+                const matchesSearch = !searchVal || 
+                    unit.title.toLowerCase().includes(searchVal) || 
+                    unit.category.toLowerCase().includes(searchVal) ||
+                    unit.formula.toLowerCase().includes(searchVal) ||
+                    unit.overview.toLowerCase().includes(searchVal);
+                return matchesFilter && matchesSearch;
+            });
+
+            document.getElementById('total-units-count').textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3 text-slate-300"></i>
+                        <p>条件に該当する文法項目が見つかりませんでした。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(unit => {
+                const isCompleted = !!userProgress[unit.id];
+                const isBookmarked = bookmarks.includes(unit.id);
+                const badgeColor = unit.level.startsWith('jhs') ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 p-5 hover:shadow-lg hover:border-brand-200 transition-all flex flex-col justify-between group cursor-pointer relative overflow-hidden";
+                card.onclick = (e) => {
+                    if(!e.target.closest('.no-modal-trigger')) openLessonModal(unit.id);
+                };
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Header Badges -->
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${badgeColor}">
+                                    ${unit.levelLabel}
+                                </span>
+                                <span class="text-xs font-semibold text-slate-400">${unit.category}</span>
+                            </div>
+                            <div class="flex items-center space-x-1">
+                                <button onclick="toggleBookmark('${unit.id}', event)" class="no-modal-trigger w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 transition">
+                                    <i class="${isBookmarked ? 'fa-solid fa-bookmark text-rose-500' : 'fa-regular fa-bookmark'}"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand-600 transition mb-2">${unit.title}</h3>
+                        <p class="text-xs font-mono bg-slate-50 text-brand-700 px-3 py-1.5 rounded-lg border border-slate-100 mb-3 truncate">
+                            ${unit.formula}
+                        </p>
+                        <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-4">
+                            ${unit.overview}
+                        </p>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-medium flex items-center ${isCompleted ? 'text-emerald-600' : 'text-slate-400'}">
+                            <i class="fa-solid ${isCompleted ? 'fa-circle-check text-emerald-500' : 'fa-circle text-slate-200'} mr-1.5"></i>
+                            ${isCompleted ? '学習完了' : '未完了'}
+                        </span>
+                        <span class="text-xs font-bold text-brand-600 group-hover:translate-x-1 transition-transform flex items-center">
+                            学習をはじめる <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- 6. LESSON MODAL LOGIC ---
+        function openLessonModal(unitId) {
+            currentModalUnitId = unitId;
+            const unit = GRAMMAR_DATA.find(u => u.id === unitId);
+            if (!unit) return;
+
+            document.getElementById('modal-title').textContent = unit.title;
+            document.getElementById('modal-category').textContent = unit.category;
+            const badge = document.getElementById('modal-level-badge');
+            badge.textContent = unit.levelLabel;
+            badge.className = `px-2.5 py-0.5 rounded-full text-xs font-extrabold uppercase ${unit.level.startsWith('jhs') ? 'bg-emerald-500 text-white' : 'bg-amber-500 text-white'}`;
+
+            // Build Theory Content
+            const theoryContainer = document.getElementById('modal-tab-content-theory');
+            theoryContainer.innerHTML = `
+                <!-- Core Concept Hero -->
+                <div class="p-4 rounded-xl bg-gradient-to-r from-brand-50 to-indigo-50 border border-brand-100">
+                    <div class="text-xs font-bold text-brand-700 uppercase tracking-wider mb-1">コア・イメージ / 本質概念</div>
+                    <div class="text-base font-bold text-slate-900">${unit.coreConcept}</div>
+                </div>
+
+                <!-- Basic Formula Box -->
+                <div class="bg-slate-900 text-slate-100 p-4 rounded-xl">
+                    <div class="text-xs text-slate-400 font-mono mb-1">【基本形・公式】</div>
+                    <div class="text-lg font-mono font-bold text-emerald-400">${unit.formula}</div>
+                </div>
+
+                <!-- Detail Key Points -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-slate-900 uppercase tracking-wider text-brand-600 border-b border-slate-200 pb-1">重要ポイント解説</h4>
+                    ${unit.points.map((p, i) => `
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h5 class="font-bold text-sm text-slate-900 mb-1 flex items-center">
+                                <span class="w-5 h-5 rounded-full bg-brand-600 text-white text-xs flex items-center justify-center mr-2 font-bold">${i+1}</span>
+                                ${p.title}
+                            </h5>
+                            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed pl-7">${p.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <!-- Common Mistakes Alert -->
+                ${unit.commonMistakes && unit.commonMistakes.length > 0 ? `
+                    <div class="bg-rose-50 border border-rose-200 p-4 rounded-xl space-y-3">
+                        <h4 class="text-sm font-bold text-rose-800 flex items-center">
+                            <i class="fa-solid fa-triangle-exclamation mr-2"></i>間違えやすいミス注意報！
+                        </h4>
+                        ${unit.commonMistakes.map(m => `
+                            <div class="text-xs sm:text-sm space-y-1 bg-white p-3 rounded-lg border border-rose-100">
+                                <div class="text-rose-600 line-through font-mono"><span class="font-bold">❌ Mistake:</span> ${m.wrong}</div>
+                                <div class="text-emerald-600 font-bold font-mono"><span class="font-bold">⭕ Correct:</span> ${m.right}</div>
+                                <div class="text-slate-500 text-xs mt-1 border-t border-slate-100 pt-1">${m.note}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+
+            // Build Examples Content
+            const examplesContainer = document.getElementById('modal-tab-content-examples');
+            examplesContainer.innerHTML = `
+                <p class="text-xs text-slate-500 mb-4">スピーカーアイコンを押すとネイティブの英語音声が再生されます。</p>
+                <div class="space-y-3">
+                    ${unit.examples.map((ex, i) => `
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex items-start justify-between group hover:border-brand-300 transition">
+                            <div class="space-y-1 pr-3">
+                                <div class="text-base font-bold text-slate-900 font-sans tracking-wide">${ex.en}</div>
+                                <div class="text-xs sm:text-sm text-slate-600">${ex.ja}</div>
+                            </div>
+                            <button onclick="speakText('${escapeQuotes(ex.en)}')" class="w-10 h-10 rounded-xl bg-white border border-slate-200 text-brand-600 hover:bg-brand-600 hover:text-white flex-shrink-0 flex items-center justify-center transition shadow-sm">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // Build Practice Quiz Content
+            renderModalPracticeQuiz(unit);
+
+            // Update Footer State
+            updateModalFooterState(unitId);
+
+            // Default to Theory Tab
+            switchModalTab('theory');
+
+            document.getElementById('lesson-modal').classList.remove('hidden');
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lesson-modal').classList.add('hidden');
+            currentModalUnitId = null;
+        }
+
+        function switchModalTab(tabKey) {
+            const tabs = ['theory', 'examples', 'practice'];
+            tabs.forEach(t => {
+                const content = document.getElementById(`modal-tab-content-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tabKey) {
+                    content.classList.remove('hidden');
+                    btn.classList.add('text-brand-600', 'border-brand-600', 'font-bold');
+                    btn.classList.remove('text-slate-600', 'border-transparent', 'font-medium');
+                } else {
+                    content.classList.add('hidden');
+                    btn.classList.remove('text-brand-600', 'border-brand-600', 'font-bold');
+                    btn.classList.add('text-slate-600', 'border-transparent', 'font-medium');
+                }
+            });
+        }
+
+        function updateModalFooterState(unitId) {
+            const isCompleted = !!userProgress[unitId];
+            const isBookmarked = bookmarks.includes(unitId);
+
+            const masteryBtn = document.getElementById('modal-mastery-toggle');
+            const masteryText = document.getElementById('modal-mastery-text');
+            if (isCompleted) {
+                masteryBtn.className = "px-5 py-2.5 rounded-xl text-sm font-bold bg-slate-200 text-slate-700 hover:bg-slate-300 transition flex items-center space-x-2";
+                masteryText.textContent = "未完了に戻す";
+            } else {
+                masteryBtn.className = "px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition flex items-center space-x-2";
+                masteryText.textContent = "学習完了としてマーク";
+            }
+
+            const bookmarkBtn = document.getElementById('modal-bookmark-toggle');
+            bookmarkBtn.innerHTML = `
+                <i class="${isBookmarked ? 'fa-solid fa-bookmark text-rose-500' : 'fa-regular fa-bookmark'}"></i>
+                <span>${isBookmarked ? '保存済み' : 'ブックマーク保存'}</span>
+            `;
+        }
+
+        function toggleCurrentMastery() {
+            if (!currentModalUnitId) return;
+            if (userProgress[currentModalUnitId]) {
+                delete userProgress[currentModalUnitId];
+                showToast("未完了ステータスに変更しました");
+            } else {
+                userProgress[currentModalUnitId] = true;
+                playAudioEffect('correct');
+                showToast("🎉 単元マスター完了！進捗が記録されました");
+            }
+            localStorage.setItem('gm_progress', JSON.stringify(userProgress));
+            updateModalFooterState(currentModalUnitId);
+            renderUnitsGrid();
+            updateDashboardStats();
+        }
+
+        function toggleCurrentBookmark() {
+            if (!currentModalUnitId) return;
+            toggleBookmark(currentModalUnitId);
+            updateModalFooterState(currentModalUnitId);
+        }
+
+        function toggleBookmark(unitId, event) {
+            if (event) event.stopPropagation();
+            const index = bookmarks.indexOf(unitId);
+            if (index > -1) {
+                bookmarks.splice(index, 1);
+                showToast("ブックマークを解除しました");
+            } else {
+                bookmarks.push(unitId);
+                showToast("ブックマークに保存しました");
+            }
+            localStorage.setItem('gm_bookmarks', JSON.stringify(bookmarks));
+            renderUnitsGrid();
+            if (activeTab === 'bookmark') renderBookmarks();
+        }
+
+        // --- 7. PRACTICE QUIZ RENDER (Inside Modal) ---
+        function renderModalPracticeQuiz(unit) {
+            const practiceContainer = document.getElementById('modal-tab-content-practice');
+            if (!unit.quiz || unit.quiz.length === 0) {
+                practiceContainer.innerHTML = `<p class="text-slate-400 text-sm text-center py-8">この単元の演習クイズは準備中です。</p>`;
+                return;
+            }
+
+            practiceContainer.innerHTML = unit.quiz.map((q, idx) => `
+                <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-4" id="modal-quiz-card-${idx}">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold px-2.5 py-1 bg-brand-100 text-brand-700 rounded-md">問 ${idx + 1}</span>
+                        <span class="text-xs font-medium text-slate-400">${q.type === 'choice' ? '四肢選択' : '並べ替え'}</span>
+                    </div>
+
+                    <div class="text-sm font-bold text-slate-900 leading-relaxed">${q.question}</div>
+
+                    <!-- QUIZ TYPE: CHOICE -->
+                    ${q.type === 'choice' ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            ${q.options.map((opt, oIdx) => `
+                                <button onclick="checkModalChoice(${idx}, ${oIdx}, ${q.answer})" class="choice-btn-${idx} w-full text-left p-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-xs sm:text-sm font-medium text-slate-700 transition">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    <!-- QUIZ TYPE: REORDER -->
+                    ${q.type === 'reorder' ? `
+                        <div class="space-y-3">
+                            <!-- Target Answer Slot -->
+                            <div id="reorder-slot-${idx}" class="min-h-[48px] p-2 bg-white rounded-xl border-2 border-dashed border-slate-300 flex flex-wrap gap-1.5 items-center">
+                                <span class="text-xs text-slate-400 w-full text-center pointer-events-none select-none">単語タグをクリックして並べ替えてください</span>
+                            </div>
+
+                            <!-- Word Chips Pool -->
+                            <div id="reorder-pool-${idx}" class="flex flex-wrap gap-2 p-2 bg-slate-100 rounded-xl">
+                                ${shuffleArray([...q.words]).map((word) => `
+                                    <button onclick="handleReorderClick('${word}', ${idx})" class="word-chip px-3 py-1.5 bg-white rounded-lg border border-slate-200 shadow-sm text-xs font-bold text-slate-700 hover:border-brand-500 hover:text-brand-600 transition">
+                                        ${word}
+                                    </button>
+                                `).join('')}
+                            </div>
+
+                            <div class="flex justify-end space-x-2">
+                                <button onclick="resetReorder(${idx})" class="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:bg-slate-200">リセット</button>
+                                <button onclick="checkReorder(${idx}, ${JSON.stringify(q.correctOrder).replace(/"/g, '&quot;')})" class="px-4 py-1.5 rounded-lg text-xs font-bold bg-brand-600 text-white hover:bg-brand-700 shadow-sm">回答を判定</button>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Explanation Result Box -->
+                    <div id="modal-quiz-explain-${idx}" class="hidden p-4 rounded-xl text-xs sm:text-sm space-y-2"></div>
+                </div>
+            `).join('');
+        }
+
+        // Quiz checking functions
+        function checkModalChoice(qIdx, selectedIdx, correctIdx) {
+            const card = document.getElementById(`modal-quiz-card-${qIdx}`);
+            const buttons = card.querySelectorAll(`.choice-btn-${qIdx}`);
+            const explain = document.getElementById(`modal-quiz-explain-${qIdx}`);
+
+            buttons.forEach((btn, bIdx) => {
+                btn.disabled = true;
+                if (bIdx === correctIdx) {
+                    btn.classList.add('bg-emerald-100', 'border-emerald-500', 'text-emerald-800', 'font-bold');
+                } else if (bIdx === selectedIdx) {
+                    btn.classList.add('bg-rose-100', 'border-rose-400', 'text-rose-800');
+                }
+            });
+
+            explain.classList.remove('hidden');
+            const isCorrect = selectedIdx === correctIdx;
+            
+            if (isCorrect) {
+                playAudioEffect('correct');
+                explain.className = "p-4 rounded-xl text-xs sm:text-sm space-y-1 bg-emerald-50 border border-emerald-200 text-emerald-900";
+                explain.innerHTML = `<div class="font-bold flex items-center text-emerald-700"><i class="fa-solid fa-circle-check mr-2"></i>正解です！</div><div>${GRAMMAR_DATA.find(u => u.id === currentModalUnitId).quiz[qIdx].explanation}</div>`;
+            } else {
+                playAudioEffect('wrong');
+                explain.className = "p-4 rounded-xl text-xs sm:text-sm space-y-1 bg-rose-50 border border-rose-200 text-rose-900";
+                explain.innerHTML = `<div class="font-bold flex items-center text-rose-700"><i class="fa-solid fa-circle-xmark mr-2"></i>不正解</div><div>${GRAMMAR_DATA.find(u => u.id === currentModalUnitId).quiz[qIdx].explanation}</div>`;
+            }
+
+            recordQuizResult(isCorrect);
+        }
+
+        let reorderSelections = {};
+
+        function handleReorderClick(word, qIdx) {
+            if (!reorderSelections[qIdx]) reorderSelections[qIdx] = [];
+            reorderSelections[qIdx].push(word);
+            renderReorderState(qIdx);
+        }
+
+        function resetReorder(qIdx) {
+            reorderSelections[qIdx] = [];
+            renderReorderState(qIdx);
+        }
+
+        function renderReorderState(qIdx) {
+            const slot = document.getElementById(`reorder-slot-${qIdx}`);
+            const selections = reorderSelections[qIdx] || [];
+
+            if (selections.length === 0) {
+                slot.innerHTML = `<span class="text-xs text-slate-400 w-full text-center pointer-events-none select-none">単語タグをクリックして並べ替えてください</span>`;
+            } else {
+                slot.innerHTML = selections.map((w, idx) => `
+                    <span class="px-3 py-1 bg-brand-600 text-white rounded-lg text-xs font-bold shadow-sm animate-fade-in flex items-center space-x-1">
+                        <span>${w}</span>
+                    </span>
+                `).join('');
+            }
+        }
+
+        function checkReorder(qIdx, correctOrder) {
+            const userAns = reorderSelections[qIdx] || [];
+            const explain = document.getElementById(`modal-quiz-explain-${qIdx}`);
+            explain.classList.remove('hidden');
+
+            const isCorrect = JSON.stringify(userAns) === JSON.stringify(correctOrder);
+
+            if (isCorrect) {
+                playAudioEffect('correct');
+                explain.className = "p-4 rounded-xl text-xs sm:text-sm space-y-1 bg-emerald-50 border border-emerald-200 text-emerald-900";
+                explain.innerHTML = `<div class="font-bold flex items-center text-emerald-700"><i class="fa-solid fa-circle-check mr-2"></i>完璧です！正しい並べ替えです。</div><div>${GRAMMAR_DATA.find(u => u.id === currentModalUnitId).quiz[qIdx].explanation}</div>`;
+            } else {
+                playAudioEffect('wrong');
+                explain.className = "p-4 rounded-xl text-xs sm:text-sm space-y-1 bg-rose-50 border border-rose-200 text-rose-900";
+                explain.innerHTML = `<div class="font-bold flex items-center text-rose-700"><i class="fa-solid fa-circle-xmark mr-2"></i>惜しい！正解は: 「${correctOrder.join(' ')}」</div><div>${GRAMMAR_DATA.find(u => u.id === currentModalUnitId).quiz[qIdx].explanation}</div>`;
+            }
+
+            recordQuizResult(isCorrect);
+        }
+
+        // --- 8. MIXED RANDOM QUIZ MODE ---
+        let currentMixedQuiz = null;
+
+        function startMixedQuiz() {
+            const container = document.getElementById('mixed-quiz-container');
+            
+            // Gather all quiz questions
+            const allQuizzes = [];
+            GRAMMAR_DATA.forEach(unit => {
+                if (unit.quiz) {
+                    unit.quiz.forEach(q => {
+                        allQuizzes.push({ ...q, unitTitle: unit.title, levelLabel: unit.levelLabel });
+                    });
+                }
+            });
+
+            if (allQuizzes.length === 0) return;
+
+            const randomQ = allQuizzes[Math.floor(Math.random() * allQuizzes.length)];
+            currentMixedQuiz = randomQ;
+
+            container.innerHTML = `
+                <div class="space-y-5 animate-fade-in">
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
+                        <span>出題領域: <strong class="text-slate-700">${randomQ.levelLabel} - ${randomQ.unitTitle}</strong></span>
+                        <span class="px-2 py-0.5 bg-slate-100 rounded text-slate-600 font-mono">${randomQ.type === 'choice' ? '選択' : '並べ替え'}</span>
+                    </div>
+
+                    <div class="text-base sm:text-lg font-bold text-slate-900 leading-relaxed">${randomQ.question}</div>
+
+                    ${randomQ.type === 'choice' ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                            ${randomQ.options.map((opt, idx) => `
+                                <button onclick="answerMixedChoice(${idx}, ${randomQ.answer})" class="mixed-opt-btn p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-brand-50 hover:border-brand-300 font-semibold text-slate-800 text-sm text-left transition">
+                                    ${opt}
+                                </button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${randomQ.type === 'reorder' ? `
+                        <div class="space-y-4 pt-2">
+                            <div id="mixed-reorder-slot" class="min-h-[56px] p-2 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300 flex flex-wrap gap-2 items-center">
+                                <span class="text-xs text-slate-400 w-full text-center">タップして単語を並べ替えてください</span>
+                            </div>
+                            <div id="mixed-reorder-pool" class="flex flex-wrap gap-2">
+                                ${shuffleArray([...randomQ.words]).map(w => `
+                                    <button onclick="handleMixedReorderClick('${w}')" class="px-3.5 py-2 bg-white rounded-xl border border-slate-200 shadow-sm text-sm font-bold text-slate-700 hover:border-brand-500 hover:text-brand-600 transition">
+                                        ${w}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="flex justify-end space-x-2">
+                                <button onclick="resetMixedReorder()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100">クリア</button>
+                                <button onclick="checkMixedReorder(${JSON.stringify(randomQ.correctOrder).replace(/"/g, '&quot;')})" class="px-5 py-2 rounded-xl text-xs font-bold bg-brand-600 text-white hover:bg-brand-700 shadow-md">判定する</button>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <div id="mixed-explain" class="hidden p-4 rounded-xl text-sm space-y-2"></div>
+
+                    <div id="mixed-next-btn-wrap" class="hidden pt-4 border-t border-slate-100 text-right">
+                        <button onclick="startMixedQuiz()" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-sm rounded-xl shadow-md transition inline-flex items-center">
+                            次の問題へ <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            mixedReorderSelections = [];
+        }
+
+        let mixedReorderSelections = [];
+
+        function handleMixedReorderClick(word) {
+            mixedReorderSelections.push(word);
+            renderMixedReorderSlot();
+        }
+
+        function resetMixedReorder() {
+            mixedReorderSelections = [];
+            renderMixedReorderSlot();
+        }
+
+        function renderMixedReorderSlot() {
+            const slot = document.getElementById('mixed-reorder-slot');
+            if (mixedReorderSelections.length === 0) {
+                slot.innerHTML = `<span class="text-xs text-slate-400 w-full text-center">タップして単語を並べ替えてください</span>`;
+            } else {
+                slot.innerHTML = mixedReorderSelections.map(w => `
+                    <span class="px-3.5 py-1.5 bg-brand-600 text-white rounded-lg text-xs font-bold shadow-sm">${w}</span>
+                `).join('');
+            }
+        }
+
+        function answerMixedChoice(selectedIdx, correctIdx) {
+            const buttons = document.querySelectorAll('.mixed-opt-btn');
+            buttons.forEach((b, idx) => {
+                b.disabled = true;
+                if (idx === correctIdx) b.className = "p-4 rounded-xl border border-emerald-500 bg-emerald-100 text-emerald-900 font-bold text-sm text-left";
+                else if (idx === selectedIdx) b.className = "p-4 rounded-xl border border-rose-400 bg-rose-100 text-rose-900 text-sm text-left";
+            });
+            handleMixedQuizResult(selectedIdx === correctIdx, currentMixedQuiz.explanation);
+        }
+
+        function checkMixedReorder(correctOrder) {
+            const isCorrect = JSON.stringify(mixedReorderSelections) === JSON.stringify(correctOrder);
+            handleMixedQuizResult(isCorrect, currentMixedQuiz.explanation + ` (正解: ${correctOrder.join(' ')})`);
+        }
+
+        function handleMixedQuizResult(isCorrect, explanationText) {
+            const explain = document.getElementById('mixed-explain');
+            explain.classList.remove('hidden');
+            document.getElementById('mixed-next-btn-wrap').classList.remove('hidden');
+
+            if (isCorrect) {
+                quizStreak++;
+                playAudioEffect('correct');
+                explain.className = "p-4 rounded-xl text-sm bg-emerald-50 border border-emerald-200 text-emerald-900";
+                explain.innerHTML = `<div class="font-bold text-emerald-700 flex items-center mb-1"><i class="fa-solid fa-circle-check mr-2"></i>正解！素晴らしい解答です。</div><div>${explanationText}</div>`;
+            } else {
+                quizStreak = 0;
+                playAudioEffect('wrong');
+                explain.className = "p-4 rounded-xl text-sm bg-rose-50 border border-rose-200 text-rose-900";
+                explain.innerHTML = `<div class="font-bold text-rose-700 flex items-center mb-1"><i class="fa-solid fa-circle-xmark mr-2"></i>不正解</div><div>${explanationText}</div>`;
+            }
+
+            document.getElementById('quiz-streak').textContent = `${quizStreak} 回`;
+            recordQuizResult(isCorrect);
+        }
+
+        // --- 9. DASHBOARD STATS ---
+        function updateDashboardStats() {
+            const totalUnits = GRAMMAR_DATA.length;
+            const completedCount = Object.keys(userProgress).length;
+            const percentage = Math.round((completedCount / totalUnits) * 100);
+
+            document.getElementById('dash-mastery-percentage').textContent = `${percentage}%`;
+            document.getElementById('dash-completed-count').textContent = completedCount;
+            document.getElementById('dash-total-count').textContent = totalUnits;
+            document.getElementById('dash-mastery-bar').style.width = `${percentage}%`;
+
+            // Quiz accuracy
+            const totalAns = currentQuizState.total;
+            const correctAns = currentQuizState.correct;
+            const accuracy = totalAns > 0 ? Math.round((correctAns / totalAns) * 100) : 0;
+            document.getElementById('dash-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('dash-total-answered').textContent = totalAns;
+            document.getElementById('dash-correct-count').textContent = correctAns;
+
+            // Breakdown (JHS vs HS)
+            const jhsUnits = GRAMMAR_DATA.filter(u => u.level.startsWith('jhs'));
+            const hsUnits = GRAMMAR_DATA.filter(u => u.level.startsWith('hs'));
+            const jhsDone = jhsUnits.filter(u => userProgress[u.id]).length;
+            const hsDone = hsUnits.filter(u => userProgress[u.id]).length;
+
+            document.getElementById('dash-jhs-text').textContent = `${jhsDone} / ${jhsUnits.length}`;
+            document.getElementById('dash-hs-text').textContent = `${hsDone} / ${hsUnits.length}`;
+            document.getElementById('dash-jhs-bar').style.width = `${Math.round((jhsDone / jhsUnits.length) * 100)}%`;
+            document.getElementById('dash-hs-bar').style.width = `${Math.round((hsDone / hsUnits.length) * 100)}%`;
+
+            // Table Body
+            const tbody = document.getElementById('dashboard-table-body');
+            tbody.innerHTML = GRAMMAR_DATA.map(unit => {
+                const isDone = !!userProgress[unit.id];
+                return `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-3 px-4 font-bold text-xs ${unit.level.startsWith('jhs') ? 'text-emerald-700' : 'text-amber-700'}">${unit.levelLabel}</td>
+                        <td class="py-3 px-4 font-semibold text-slate-900">${unit.title}</td>
+                        <td class="py-3 px-4 font-mono text-xs text-slate-500">${unit.formula}</td>
+                        <td class="py-3 px-4 text-center">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-500'}">
+                                ${isDone ? '習得済み' : '未完了'}
+                            </span>
+                        </td>
+                        <td class="py-3 px-4 text-right">
+                            <button onclick="openLessonModal('${unit.id}')" class="text-xs font-bold text-brand-600 hover:text-brand-800">復習する</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // --- 10. BOOKMARKS VIEW ---
+        function renderBookmarks() {
+            const container = document.getElementById('bookmark-grid');
+            const badge = document.getElementById('bookmark-count-badge');
+            badge.textContent = `${bookmarks.length} 件`;
+
+            if (bookmarks.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-slate-400">
+                        <i class="fa-regular fa-bookmark text-4xl mb-3 text-slate-300"></i>
+                        <p>ブックマークされた単元はありません。<br>気になる単元のカードでリボンアイコンをクリックして保存しましょう。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            GRAMMAR_DATA.filter(u => bookmarks.includes(u.id)).forEach(unit => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:border-brand-200 transition flex flex-col justify-between cursor-pointer";
+                card.onclick = () => openLessonModal(unit.id);
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${unit.level.startsWith('jhs') ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">${unit.levelLabel}</span>
+                            <button onclick="toggleBookmark('${unit.id}', event)" class="text-rose-500 text-sm hover:opacity-80">
+                                <i class="fa-solid fa-bookmark"></i>
+                            </button>
+                        </div>
+                        <h4 class="font-bold text-slate-900 mb-1">${unit.title}</h4>
+                        <p class="text-xs text-slate-500 line-clamp-2">${unit.overview}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-right">
+                        <span class="text-xs font-bold text-brand-600">学習ノートを開く →</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- 11. AUDIO & UTILITIES ---
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+                showToast("🔊 ネイティブ音声再生中...");
+            } else {
+                showToast("お使いのブラウザは音声合成機能に対応していません");
+            }
+        }
+
+        function playAudioEffect(type) {
+            try {
+                if (Tone && Tone.context.state !== 'running') {
+                    Tone.start();
+                }
+                const synth = new Tone.Synth().toDestination();
+                if (type === 'correct') {
+                    synth.triggerAttackRelease("C5", "8n", Tone.now());
+                    synth.triggerAttackRelease("G5", "8n", Tone.now() + 0.1);
+                } else if (type === 'wrong') {
+                    synth.triggerAttackRelease("F3", "8n", Tone.now());
+                    synth.triggerAttackRelease("C3", "8n", Tone.now() + 0.15);
+                }
+            } catch (e) {
+                // Audio fallback silence
+            }
+        }
+
+        function recordQuizResult(isCorrect) {
+            currentQuizState.total++;
+            if (isCorrect) currentQuizState.correct++;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 2500);
+        }
+
+        function setupSearch() {
+            document.getElementById('search-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') filterUnits();
+            });
+        }
+
+        function filterUnits() {
+            renderUnitsGrid();
+        }
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function escapeQuotes(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
